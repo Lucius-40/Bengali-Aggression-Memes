@@ -22,7 +22,7 @@ start_time = time.time()
 def load_dataset(files_path,memes_path, max_len, batch_size):
 
    
-    print("Fetching MIMOSA Dataset... ")
+    print("Fetching MEME Dataset... ")
     print("-----------------------------")
     print("Maximum Text Length: ", max_len)
     print("Batch Size: ", batch_size)
@@ -39,9 +39,9 @@ def load_dataset(files_path,memes_path, max_len, batch_size):
 
     # encode labels
 
-    train_data['Label'] = train_data['Label'].replace({"non-aggressive":0,"gendered aggression":1,"political aggression":2,"religious aggression":3,"others":4})
-    valid_data['Label'] = valid_data['Label'].replace({"non-aggressive":0,"gendered aggression":1,"political aggression":2,"religious aggression":3,"others":4})
-    test_data['Label'] = test_data['Label'].replace({"non-aggressive":0,"gendered aggression":1,"political aggression":2,"religious aggression":3,"others":4})
+    train_data['label'] = train_data['label'].replace({"Neutral":0,"Genders":1,"Politics":2,"Religion":3})
+    valid_data['label'] = valid_data['label'].replace({"Neutral":0,"Genders":1,"Politics":2,"Religion":3})
+    test_data['label'] = test_data['label'].replace({"Neutral":0,"Genders":1,"Politics":2,"Religion":3})
 
     
     # print("Training Data:", len(train_data))
@@ -65,7 +65,7 @@ def load_dataset(files_path,memes_path, max_len, batch_size):
             img_name = os.path.join(self.data_dir, self.data.loc[idx, 'image_name'])
             image = Image.open(img_name)
             caption = self.data.loc[idx, 'Captions']
-            label = int(self.data.loc[idx, 'Label'])
+            label = int(self.data.loc[idx, 'label'])
 
             if self.transform:
                 image = self.transform(image)

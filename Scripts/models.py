@@ -11,6 +11,7 @@ from madgrad import MADGRAD
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,roc_auc_score
 import clip
 import os
+from huggingface_hub import HfApi, create_repo
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print("Device:",device)
@@ -117,7 +118,7 @@ def calculate_accuracy(predictions, targets):
 def train(train_loader, val_loader, path, heads, epochs, lr_rate):
 
   # Create an instance of the model
-  num_classes = 5  # Number of output classes
+  num_classes = 4  # Number of output classes
   num_heads = heads  # Number of attention heads for multihead attention
   model = MAF(clip_model, num_classes, num_heads)
   model = model.to(device)  
@@ -236,3 +237,23 @@ def evaluation(path, model, test_loader):
   print('Evaluation Done.')
   print("--------------------------------")
   return test_labels, test_preds
+
+
+def save_to_huggingface(model_path, repo_id, token):
+    """Upload model checkpoint to Hugging Face Hub"""
+    api = HfApi()
+    try:
+        create_repo(repo_id, token=token, exist_ok=True, private=False)
+    except:
+        pass
+    
+    api.upload_file(
+        path_or_fileobj=model_path,
+        path_in_repo="maf_model.pth",
+        repo_id=repo_id,
+        token=token
+    )
+    print(f"Model uploaded to: https://huggingface.co/{repo_id}")
+
+
+save_to_huggingface("path/to/maf_model.pth", "lucius-40/Aggressive meme", "your_hf_token")

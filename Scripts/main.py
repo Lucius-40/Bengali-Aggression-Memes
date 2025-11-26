@@ -30,7 +30,7 @@ import evaluation as e
 
 def print_metrices(true,pred):
     # print(confusion_matrix(true,pred))
-    print(classification_report(true,pred,target_names=['NoAg','GAg','PAg','RAg','Oth'],digits = 3))
+    print(classification_report(true,pred,target_names=['Neutral','Genders','Politics','Religion'],digits = 3))
     print("Precison : ",precision_score(true,pred, average = 'weighted'))
     print("Recall : ",recall_score(true,pred,  average = 'weighted'))
     print("F1 : ",f1_score(true,pred,  average = 'weighted'))
@@ -49,7 +49,7 @@ def main(args):
     dataset_base_path = os.path.join(root_dir, args.dataset_path)
     # Construct the full path by appending the 'Files' folder and the Excel file
     excel_path = os.path.join(dataset_base_path, '')
-    memes_path = os.path.join(dataset_base_path, 'Img')
+    memes_path = os.path.join(dataset_base_path, 'Image')
     # create a path model saving
     saved_models_dir = os.path.join(root_dir, args.model_path)
     # Create the folder if it doesn't already exist
